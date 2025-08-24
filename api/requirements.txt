@@ -1,6 +1,6 @@
 fastapi==0.103.1
 uvicorn==0.23.2
-python-multipart==0.0.6
+python-multipart==0.0.18
 requests==2.31.0
 pyodbc==4.0.39
 dnspython==2.4.2
