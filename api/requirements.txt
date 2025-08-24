@@ -3,6 +3,6 @@ uvicorn==0.23.2
 python-multipart==0.0.6
 requests==2.31.0
 pyodbc==4.0.39
-dnspython==2.4.2
+dnspython==2.6.1
 mpmath==1.3.0
 python-dotenv==1.0.0
