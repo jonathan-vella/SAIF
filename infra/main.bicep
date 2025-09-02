@@ -12,7 +12,7 @@ metadata documentation = 'https://github.com/your-org/saif/blob/main/docs/deploy
   'swedencentral'
   'germanywestcentral'
 ])
-param location string = 'swedencentral'
+param location string = 'germanywestcentral'
 
 @description('The administrator login username for the SQL Server')
 param sqlAdminLogin string = 'saifadmin'

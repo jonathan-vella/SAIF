@@ -22,7 +22,7 @@ SAIF is an **intentionally vulnerable** 3-tier educational application for secur
 
 **Deployment Patterns:**
 - Local: `docker-compose up` (all services containerized)
-- Azure: `scripts/Deploy-SAIF-Complete.ps1` (infrastructure + containers)
+- Azure: `scripts/Deploy-SAIF-v1.ps1` (infrastructure + containers)
 - Manual: PowerShell scripts with Bicep templates
 
 ---
@@ -119,10 +119,10 @@ cd web && php -S localhost:8080
 #### Azure Deployment Workflow
 ```powershell
 # Full automated deployment
-.\scripts\Deploy-SAIF-Complete.ps1
+.\scripts\Deploy-SAIF-v1.ps1
 
 # Infrastructure only, then containers
-.\scripts\Deploy-SAIF-Complete.ps1 -skipContainers
+.\scripts\Deploy-SAIF-v1.ps1 -skipContainers
 .\scripts\Update-SAIF-Containers.ps1 -ResourceGroupName "rg-name"
 ```
 

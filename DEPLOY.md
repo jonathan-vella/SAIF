@@ -12,7 +12,7 @@ SAIF provides **true 1-click deployment** with complete automation including inf
 # Clone and deploy everything
 git clone https://github.com/jonathan-vella/SAIF.git
 cd SAIF
-.\scripts\Deploy-SAIF-Complete.ps1
+.\scripts\Deploy-SAIF-v1.ps1
 ```
 
 **✅ What this automates:**
@@ -75,7 +75,7 @@ The automated deployment creates a complete hackathon environment:
 
 | Script | Purpose | Automation Level |
 |--------|---------|------------------|
-| **`Deploy-SAIF-Complete.ps1`** | Full deployment including containers | 🟢 **100% Automated** |
+| **`Deploy-SAIF-v1.ps1`** | Full deployment including containers | 🟢 **100% Automated** |
 | **`Update-SAIF-Containers.ps1`** | Update containers only | 🟢 **100% Automated** |
 
 ### Script Examples
@@ -83,13 +83,13 @@ The automated deployment creates a complete hackathon environment:
 **Complete deployment:**
 ```powershell
 # Deploy everything to Sweden Central
-.\scripts\Deploy-SAIF-Complete.ps1
+.\scripts\Deploy-SAIF-v1.ps1
 
 # Deploy to Germany West Central
-.\scripts\Deploy-SAIF-Complete.ps1 -location "germanywestcentral"
+.\scripts\Deploy-SAIF-v1.ps1 -location "germanywestcentral"
 
 # Deploy infrastructure only (skip containers)
-.\scripts\Deploy-SAIF-Complete.ps1 -skipContainers
+.\scripts\Deploy-SAIF-v1.ps1 -skipContainers
 ```
 
 **Container updates only:**

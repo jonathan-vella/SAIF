@@ -13,9 +13,9 @@
 .PARAMETER skipContainers
     Skip container building and pushing (infrastructure only).
 .EXAMPLE
-    .\Deploy-SAIF-Complete.ps1 -location "swedencentral"
+    .\Deploy-SAIF-v1.ps1 -location "swedencentral"
 .EXAMPLE
-    .\Deploy-SAIF-Complete.ps1 -location "germanywestcentral" -skipContainers
+    .\Deploy-SAIF-v1.ps1 -location "germanywestcentral" -skipContainers
 .NOTES
     Author: SAIF Team
     Version: 2.0.0
@@ -26,7 +26,7 @@
 param(
     [Parameter(Mandatory=$false)]
     [ValidateSet("swedencentral", "germanywestcentral")]
-    [string]$location = "swedencentral",
+    [string]$location = "germanywestcentral",
     
     [Parameter(Mandatory=$false)]
     [string]$resourceGroupName,
@@ -38,9 +38,9 @@ param(
 # Set resource group name based on location if not specified
 if (-not $resourceGroupName) {
     if ($location -eq "swedencentral") {
-        $resourceGroupName = "rg-saif-swc01"
+        $resourceGroupName = "rg-saifv1-swc01"
     } else {
-        $resourceGroupName = "rg-saif-gwc01"
+        $resourceGroupName = "rg-saifv1-gwc01"
     }
 }
 

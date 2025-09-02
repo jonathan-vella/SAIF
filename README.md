@@ -22,7 +22,7 @@ Deploy SAIF to Azure with **complete automation** - true 1-click deployment:
 ```powershell
 git clone https://github.com/jonathan-vella/SAIF.git
 cd SAIF\scripts
-.\Deploy-SAIF-Complete.ps1
+.\Deploy-SAIF-v1.ps1
 ```
 **✅ Includes:** Infrastructure + Container builds + App configuration + Monitoring setup
 
@@ -108,7 +108,7 @@ SAIF features **true 1-click deployment** with complete automation:
 
 **Fully Automated (Recommended):**
 ```powershell
-.\scripts\Deploy-SAIF-Complete.ps1
+.\scripts\Deploy-SAIF-v1.ps1
 ```
 
 **Infrastructure + Manual Container Build:**
@@ -182,8 +182,8 @@ graph TD
     Infra --> AzureParams(azuredeploy.parameters.json)
     Infra --> Metadata(metadata.json)
     
-    %% Scripts structure
-    Scripts --> DeployComplete(Deploy-SAIF-Complete.ps1)
+  %% Scripts structure
+  Scripts --> DeployComplete(Deploy-SAIF-v1.ps1)
     Scripts --> UpdateContainers(Update-SAIF-Containers.ps1)
     Scripts --> TestLocal(Test-SAIFLocal.ps1)
     
@@ -226,7 +226,7 @@ graph TD
   - `main.parameters.json` & `azuredeploy.parameters.json`: Parameter files for different environments
   - `metadata.json`: Azure QuickStart template metadata
 - **`/scripts`**: Fully automated PowerShell deployment scripts
-  - `Deploy-SAIF-Complete.ps1`: End-to-end automated deployment
+  - `Deploy-SAIF-v1.ps1`: End-to-end automated deployment
   - `Update-SAIF-Containers.ps1`: Container build and deployment updates
   - `Test-SAIFLocal.ps1`: Local development testing script
 - **`/docs`**: Comprehensive documentation and guides
