@@ -7,7 +7,7 @@
     2. Container building and pushing to ACR
     3. App Service configuration and restart
 .PARAMETER location
-    The Azure region to deploy resources to. Default is 'swedencentral'.
+    The Azure region to deploy resources to. Default is 'germanywestcentral'.
 .PARAMETER resourceGroupName
     Optional. The name of the resource group to deploy to. Defaults to region-specific naming.
 .PARAMETER skipContainers
@@ -25,7 +25,7 @@
 [CmdletBinding()]
 param(
     [Parameter(Mandatory=$false)]
-    [ValidateSet("swedencentral", "germanywestcentral")]
+    [ValidateSet("germanywestcentral", "swedencentral")]
     [string]$location = "germanywestcentral",
     
     [Parameter(Mandatory=$false)]
@@ -102,19 +102,19 @@ if (-not $PSBoundParameters.ContainsKey('location') -or -not $PSBoundParameters.
     if (-not $PSBoundParameters.ContainsKey('location')) {
         Write-Host ""
         Write-Host "Available regions for SAIF:" -ForegroundColor Yellow
-        Write-Host "  1. Sweden Central (swedencentral) - Recommended" -ForegroundColor White
-        Write-Host "  2. Germany West Central (germanywestcentral)" -ForegroundColor White
+        Write-Host "  1. Germany West Central (germanywestcentral)" -ForegroundColor White
+        Write-Host "  2. Sweden Central (swedencentral)" -ForegroundColor White
         $regionChoice = Read-Host "Select region (1-2) [1]"
         
         switch ($regionChoice) {
-            "2" { $location = "germanywestcentral" }
-            default { $location = "swedencentral" }
+            "2" { $location = "swedencentral" }
+            default { $location = "germanywestcentral" }
         }
     }
     
     # Resource group configuration
     if (-not $PSBoundParameters.ContainsKey('resourceGroupName')) {
-        $defaultRgName = if ($location -eq "swedencentral") { "rg-saif-swc01" } else { "rg-saif-gwc01" }
+        $defaultRgName = if ($location -eq "swedencentral") { "rg-saifv1-swc01" } else { "rg-saifv1-gwc01" }
         Write-Host ""
         Write-Host "Resource Group Configuration:" -ForegroundColor Yellow
         $rgChoice = Read-Host "Resource group name [$defaultRgName]"
@@ -197,6 +197,16 @@ if ($rgExists -eq "false") {
     }
 }
 
+# Get additional tags (Application, Owner)
+$defaultApp = "SAIF"
+$appInput = Read-Host "Application tag [$defaultApp]"
+$applicationName = if ([string]::IsNullOrWhiteSpace($appInput)) { $defaultApp } else { $appInput }
+
+$defaultOwner = $currentAccount.user
+if ([string]::IsNullOrWhiteSpace($defaultOwner)) { $defaultOwner = "Unknown" }
+$ownerInput = Read-Host "Owner tag [$defaultOwner]"
+$owner = if ([string]::IsNullOrWhiteSpace($ownerInput)) { $defaultOwner } else { $ownerInput }
+
 # Get SQL admin password
 $sqlPassword = Read-Host "Enter SQL Admin Password (min 12 characters)" -AsSecureString
 $sqlPasswordText = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($sqlPassword))
@@ -212,7 +222,7 @@ $deploymentName = "main-$(Get-Date -Format 'yyyyMMdd-HHmmss')"
 $deploymentResult = az deployment group create `
     --resource-group $resourceGroupName `
     --template-file "../infra/main.bicep" `
-    --parameters location=$location sqlAdminPassword=$sqlPasswordText `
+    --parameters location=$location sqlAdminPassword=$sqlPasswordText applicationName="$applicationName" owner="$owner" `
     --name $deploymentName `
     --query "properties.provisioningState" -o tsv
 

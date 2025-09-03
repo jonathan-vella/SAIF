@@ -1,4 +1,15 @@
-# SAIF Deployment Guide
+---
+post_title: "SAIF Deployment Guide"
+author1: "SAIF Team"
+post_slug: "saif-deployment-guide"
+microsoft_alias: "saifteam"
+featured_image: ""
+categories: ["Infrastructure", "Azure"]
+tags: ["Bicep", "PowerShell", "Containers"]
+ai_note: "Content reviewed with AI assistance."
+summary: "One‑click deployment of SAIF using PowerShell or Azure Portal, including infra, containers, and diagnostics."
+post_date: "2025-09-03"
+---
 
 ## 🚀 Fully Automated Deployment Options
 
@@ -23,6 +34,7 @@ cd SAIF
 - ✅ Container builds and pushes
 - ✅ App Service restarts and validation
 - ✅ P1v3 SKU and Always On configuration
+ - ✅ Prompts for Application and Owner tags (Owner defaults to signed-in Azure user)
 
 **⏱️ Total time:** ~15-20 minutes
 
@@ -47,7 +59,7 @@ cd SAIF
 The automated deployment creates a complete hackathon environment:
 
 ### 🏗️ Infrastructure (All Automated)
-- **Resource Group**: `rg-saif-swc01` (Sweden Central) or `rg-saif-gwc01` (Germany West Central)
+- **Resource Group**: `rg-saifv1-swc01` (Sweden Central) or `rg-saifv1-gwc01` (Germany West Central)
 - **Azure Container Registry**: Standard SKU with managed identity authentication
 - **App Service Plan**: Linux Premium P1v3 tier with Always On enabled
 - **API App Service**: Python FastAPI backend with managed identity
@@ -82,11 +94,11 @@ The automated deployment creates a complete hackathon environment:
 
 **Complete deployment:**
 ```powershell
-# Deploy everything to Sweden Central
+# Deploy everything to Germany West Central (default)
 .\scripts\Deploy-SAIF-v1.ps1
 
-# Deploy to Germany West Central
-.\scripts\Deploy-SAIF-v1.ps1 -location "germanywestcentral"
+# Deploy to Sweden Central
+.\scripts\Deploy-SAIF-v1.ps1 -location "swedencentral"
 
 # Deploy infrastructure only (skip containers)
 .\scripts\Deploy-SAIF-v1.ps1 -skipContainers
@@ -131,8 +143,8 @@ After making changes to your application code, update containers easily:
 ## 📍 Deployment Regions
 
 Choose from supported regions:
-- **Sweden Central** (`swedencentral`) - Default
-- **Germany West Central** (`germanywestcentral`)
+- **Germany West Central** (`germanywestcentral`) - Default
+- **Sweden Central** (`swedencentral`)
 
 ## 🔧 Prerequisites
 
@@ -156,7 +168,7 @@ After successful deployment, you'll receive output like:
 
 ```
 🎉 SAIF Deployment Complete!
-Resource Group: rg-saif-swc01
+Resource Group: rg-saifv1-swc01
 API URL: https://app-saif-api-axxq5b.azurewebsites.net
 Web URL: https://app-saif-web-axxq5b.azurewebsites.net
 ```
@@ -187,8 +199,40 @@ To remove all resources:
 
 ```powershell
 # Delete entire resource group (WARNING: This deletes everything!)
-az group delete --name rg-saif-swc01 --yes --no-wait
+az group delete --name rg-saifv1-swc01 --yes --no-wait
 ```
+
+## 🏷️ Tags Applied
+
+All resources receive a consistent tag set:
+
+- Environment: hackathon
+- Application: prompted during deployment (default: SAIF)
+- Owner: defaults to the signed-in Azure user (overrideable)
+- CreatedBy: Bicep
+- LastModified: deployment date (yyyy-MM-dd)
+- Purpose: Security Training
+- Plus any additional values provided via the `tags` parameter
+
+Note: Defaults are merged with provided tags using `union(tags, defaults)`. If you want provided tags to override defaults, flip the merge order.
+
+## 🔍 Optional: Preview and Non‑Interactive
+
+- Preview changes (what‑if):
+	```powershell
+	az deployment group what-if `
+		--resource-group <rg-name> `
+		--template-file ./infra/main.bicep `
+		--parameters ./infra/main.parameters.json sqlAdminPassword=<secure>
+	```
+
+- Non‑interactive deploy with parameter file:
+	```powershell
+	az deployment group create `
+		--resource-group <rg-name> `
+		--template-file ./infra/main.bicep `
+		--parameters ./infra/main.parameters.json applicationName="SAIF" owner="<you>" sqlAdminPassword=<secure>
+	```
 
 ## 🔍 Troubleshooting
 
@@ -206,10 +250,10 @@ az account show
 **App Service Shows "Application Error"**
 ```powershell
 # Check container logs
-az webapp log tail --name your-app-name --resource-group rg-saif-swc01
+az webapp log tail --name your-app-name --resource-group rg-saifv1-swc01
 
 # Verify container registry permissions
-az role assignment list --assignee $(az webapp identity show --name your-app-name --resource-group rg-saif-swc01 --query principalId -o tsv)
+az role assignment list --assignee $(az webapp identity show --name your-app-name --resource-group rg-saifv1-swc01 --query principalId -o tsv)
 ```
 
 **SQL Connection Issues**
@@ -225,7 +269,7 @@ For deployment issues, check:
 
 ## 📈 Scaling
 
-The deployment uses Basic tier services suitable for development and training. For production use:
+The deployment uses PremiumV3 P1v3 for App Service Plan and S1 for SQL DB by default (training environment). For production use:
 
 - Upgrade App Service Plan to Standard or Premium
 - Consider Azure SQL Database scaling options

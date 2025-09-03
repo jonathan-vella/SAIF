@@ -113,7 +113,7 @@ cd scripts
 ### Deployment Parameters
 
 - `resourceGroupName`: (Optional) Azure resource group name. If not specified, it defaults to `rg-saif-swc01` for Sweden Central or `rg-saif-gwc01` for Germany West Central.
-- `location`: (Optional) Azure region for deployment. Default is 'swedencentral'. Allowed values: 'swedencentral', 'germanywestcentral'.
+- `location`: (Optional) Azure region for deployment. Default is 'germanywestcentral'. Allowed values: 'germanywestcentral', 'swedencentral'.
 - `environmentName`: (Optional) Environment name used for resource naming. Default is 'saif'.
 
 ## Architecture
