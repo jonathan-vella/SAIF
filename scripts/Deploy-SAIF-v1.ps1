@@ -151,15 +151,47 @@ if ($confirm -ne 'y' -and $confirm -ne 'Y') {
 # Step 1: Infrastructure Deployment
 Show-Banner "Step 1: Infrastructure Deployment"
 
+# Collect tag values up-front so we can tag the resource group on create/update
+$defaultApp = "SAIF"
+$appInput = Read-Host "Application tag [$defaultApp]"
+$applicationName = if ([string]::IsNullOrWhiteSpace($appInput)) { $defaultApp } else { $appInput }
+
+$defaultOwner = $currentAccount.user
+if ([string]::IsNullOrWhiteSpace($defaultOwner)) { $defaultOwner = "Unknown" }
+$ownerInput = Read-Host "Owner tag [$defaultOwner]"
+$owner = if ([string]::IsNullOrWhiteSpace($ownerInput)) { $defaultOwner } else { $ownerInput }
+
+# Derived/constant tags
+$lastModified = (Get-Date -Format 'yyyy-MM-dd')
+$createdBy = "Bicep"
+$environmentTag = "hackathon"
+$purposeTag = "Security Training"
+
 # Check if resource group exists
 Write-Host "Checking resource group..." -ForegroundColor Yellow
 $rgExists = az group exists --name $resourceGroupName -o tsv
 
 if ($rgExists -eq "false") {
     Write-Host "Creating resource group: $resourceGroupName" -ForegroundColor Green
-    az group create --name $resourceGroupName --location $location
+    az group create --name $resourceGroupName --location $location --tags `
+        Environment=$environmentTag `
+        Application="$applicationName" `
+        Owner="$owner" `
+        CreatedBy="$createdBy" `
+        LastModified="$lastModified" `
+        Purpose="$purposeTag"
 } else {
     Write-Host "✅ Resource group exists: $resourceGroupName" -ForegroundColor Green
+    
+    # Apply/refresh tags on existing resource group
+    Write-Host "Updating resource group tags..." -ForegroundColor Yellow
+    az group update --name $resourceGroupName --tags `
+        Environment=$environmentTag `
+        Application="$applicationName" `
+        Owner="$owner" `
+        CreatedBy="$createdBy" `
+        LastModified="$lastModified" `
+        Purpose="$purposeTag"
     
     # Check for existing resources
     Write-Host "Checking for existing resources..." -ForegroundColor Yellow
@@ -196,16 +228,6 @@ if ($rgExists -eq "false") {
         }
     }
 }
-
-# Get additional tags (Application, Owner)
-$defaultApp = "SAIF"
-$appInput = Read-Host "Application tag [$defaultApp]"
-$applicationName = if ([string]::IsNullOrWhiteSpace($appInput)) { $defaultApp } else { $appInput }
-
-$defaultOwner = $currentAccount.user
-if ([string]::IsNullOrWhiteSpace($defaultOwner)) { $defaultOwner = "Unknown" }
-$ownerInput = Read-Host "Owner tag [$defaultOwner]"
-$owner = if ([string]::IsNullOrWhiteSpace($ownerInput)) { $defaultOwner } else { $ownerInput }
 
 # Get SQL admin password
 $sqlPassword = Read-Host "Enter SQL Admin Password (min 12 characters)" -AsSecureString
