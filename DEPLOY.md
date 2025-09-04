@@ -87,10 +87,12 @@ The automated deployment creates a complete hackathon environment:
 - Web App Service: PHP frontend (container)
 - Azure SQL Server and Database: S1 tier
 - Log Analytics Workspace + Application Insights
+ - (v2) Consolidated diagnostics bundle attaches three diagnostic settings (API, Web, SQL) via single module
 
 ### 🔐 Security Configuration (All Automated)
 - Managed Identities: System-assigned identities on both App Services (used for ACR and, in v2, for SQL)
 - RBAC: AcrPull roles assigned to identities for ACR image pulls
+	- Stable GUID salt (subscription + ACR name + principalId) prevents unnecessary role assignment recreation on template refactors
 - ACR Authentication: Uses managed identity (no admin credentials)
 - Application Insights: Connection strings automatically configured
 - SQL Authentication: Behavior differs by version (see below)
@@ -322,6 +324,22 @@ When deploying v2 via the chooser or `Deploy-SAIF-v2.ps1`:
 - All educational vulnerabilities on the API endpoints remain for training purposes (permissive CORS, env exposure, SQLi surface, etc.), but credentials are not stored in app settings.
 
 Tip: Ensure the Azure CLI SQL extension is available for the `az sql` path; the script detects and falls back if needed.
+
+## ♻️ v2 Modularization & Diagnostics Bundle
+
+The v2 infrastructure template was modularized to align with maintainability goals:
+
+- New `aadAdmin` module sets Azure SQL Entra administrator
+- Consolidated `diagnosticsBundle` module replaces prior individual diagnostics modules (API, Web, SQL)
+- Security `roleAcrPull` module GUID salt realigned for stability (prevents drift-induced reassignments)
+
+Why the bundle? Fewer module calls and reduced duplication while preserving the original diagnostic setting names to avoid churn in existing workspaces and Log Analytics queries.
+
+Observability Impact: All previous log/metric categories remain enabled (broad for training). In production you would trim categories, add retention tuning, and enable threat detection policies.
+
+Rollback: If you ever need to split diagnostics again, you can reintroduce per‑resource modules without affecting outputs—resource names are preserved in the bundle (`ds-api-v2-*`, `ds-web-v2-*`, `ds-sql-v2-*`).
+
+No Output Changes: All published outputs (ACR, App Services, URLs, SQL FQDN, Workspace Id) remain unchanged to protect downstream automation.
 
 Note: v2 deployment and update scripts also build and push the web container (`saif/web:latest`) into the v2 ACR so the v2 web app can pull successfully.
 

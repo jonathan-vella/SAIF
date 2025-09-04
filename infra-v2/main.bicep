@@ -88,9 +88,6 @@ module acr '../infra/modules/container/registry.bicep' = {
   }
 }
 
-resource acrRes 'Microsoft.ContainerRegistry/registries@2023-07-01' existing = {
-  name: acrName
-}
 
 // SQL Server (keeps public access for SAIF training)
 module sqlServer '../infra/modules/sql/server.bicep' = {
@@ -105,14 +102,12 @@ module sqlServer '../infra/modules/sql/server.bicep' = {
 }
 
 // Set Azure AD admin on SQL Server (enables EXTERNAL PROVIDER users)
-resource sqlAadAdmin 'Microsoft.Sql/servers/administrators@2023-05-01-preview' = {
-  name: 'ActiveDirectory'
-  parent: sqlSrv
-  properties: {
-    administratorType: 'ActiveDirectory'
+module sqlAadAdmin './modules/sql/aadAdmin.bicep' = {
+  name: 'sqladm-v2-${uniqueSuffix}'
+  params: {
+    serverName: sqlServerName
     login: aadAdminLogin
-    sid: aadAdminObjectId
-    tenantId: tenant().tenantId
+    objectId: aadAdminObjectId
   }
   dependsOn: [ sqlServer ]
 }
@@ -191,67 +186,34 @@ module webAppService '../infra/modules/web/site.bicep' = {
   }
 }
 
-// Diagnostics
-resource apiSite 'Microsoft.Web/sites@2023-01-01' existing = { name: apiAppServiceName }
-resource webSite 'Microsoft.Web/sites@2023-01-01' existing = { name: webAppServiceName }
-resource sqlSrv 'Microsoft.Sql/servers@2023-05-01-preview' existing = { name: sqlServerName }
-
-resource apiDiag 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
-  name: 'ds-api-v2-${uniqueSuffix}'
-  scope: apiSite
-  dependsOn: [ apiAppService ]
-  properties: {
+// Diagnostics (bundled single module replacing individual site/sql diagnostics)
+module diagnosticsBundle './modules/diagnostics/diagnosticsBundle.bicep' = {
+  name: 'diag-bundle-v2-${uniqueSuffix}'
+  params: {
+    apiSiteName: apiAppServiceName
+    webSiteName: webAppServiceName
+    sqlServerName: sqlServerName
     workspaceId: observability.outputs.logAnalyticsId
-    logs: [
-      { category: 'AppServiceHTTPLogs', enabled: true }
-      { category: 'AppServiceConsoleLogs', enabled: true }
-    ]
-    metrics: [ { category: 'AllMetrics', enabled: true } ]
+    uniqueSuffix: uniqueSuffix
   }
-}
-
-resource webDiag 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
-  name: 'ds-web-v2-${uniqueSuffix}'
-  scope: webSite
-  dependsOn: [ webAppService ]
-  properties: {
-    workspaceId: observability.outputs.logAnalyticsId
-    logs: [
-      { category: 'AppServiceHTTPLogs', enabled: true }
-      { category: 'AppServiceConsoleLogs', enabled: true }
-    ]
-    metrics: [ { category: 'AllMetrics', enabled: true } ]
-  }
-}
-
-resource sqlDiag 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
-  name: 'ds-sql-v2-${uniqueSuffix}'
-  scope: sqlSrv
-  dependsOn: [ sqlServer ]
-  properties: {
-    workspaceId: observability.outputs.logAnalyticsId
-    metrics: [ { category: 'AllMetrics', enabled: true } ]
-  }
+  dependsOn: [ apiAppService, webAppService, sqlServer ]
 }
 
 // RBAC AcrPull to ACR
-resource apiAcrRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(subscription().id, resourceId('Microsoft.ContainerRegistry/registries', acrName), apiAppServiceName, 'AcrPull')
-  scope: acrRes
-  properties: {
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7f951dda-4ed3-4680-a7ca-43fe172d538d')
+// AcrPull role assignments (module-based)
+module apiAcrPull '../infra/modules/security/roleAcrPull.bicep' = {
+  name: 'ra-api-v2-${uniqueSuffix}'
+  params: {
+    acrName: acrName
     principalId: apiAppService.outputs.principalId
-    principalType: 'ServicePrincipal'
   }
 }
 
-resource webAcrRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(subscription().id, resourceId('Microsoft.ContainerRegistry/registries', acrName), webAppServiceName, 'AcrPull')
-  scope: acrRes
-  properties: {
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7f951dda-4ed3-4680-a7ca-43fe172d538d')
+module webAcrPull '../infra/modules/security/roleAcrPull.bicep' = {
+  name: 'ra-web-v2-${uniqueSuffix}'
+  params: {
+    acrName: acrName
     principalId: webAppService.outputs.principalId
-    principalType: 'ServicePrincipal'
   }
 }
 
