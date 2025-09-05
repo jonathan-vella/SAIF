@@ -2,11 +2,11 @@ name: Aggregate Scoring Sheets
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'docs/hackathon/coach-guide/SCORING-SHEET*.md'
-      - 'scripts/Export-ScoringSheet.ps1'
-      - 'scripts/Aggregate-ScoringSheets.ps1'
+ # push:
+ #   paths:
+ #     - 'docs/hackathon/coach-guide/SCORING-SHEET*.md'
+ #     - 'scripts/Export-ScoringSheet.ps1'
+ #     - 'scripts/Aggregate-ScoringSheets.ps1'
 
 jobs:
   aggregate:
