@@ -9,6 +9,9 @@ guide_type: coach
 ## Overview
 This guide is designed for coaches supporting hackathon students in the Secure AI Foundations (SAIF) challenge. It provides a structured overview of all technical challenges, facilitation strategies, and expected outcomes. Each challenge builds on the previous, enabling coaches to guide students through the design, deployment, and security hardening of a modern cloud application.
 
+### Intentional Vulnerabilities (Coach Context)
+The SAIF platform is **deliberately vulnerable** (e.g., permissive exposure, lack of private endpoints, mutable image tags). Do not encourage premature remediation—coach teams to document Gaps and articulate Future Needs first. This preserves learning value for later challenges where implementation and validation occur.
+
 ## Prerequisites
 - Familiarity with Azure architecture, networking, and security controls
 - Access to the SAIF repository and all coach/student guides

@@ -1,0 +1,38 @@
+name: Aggregate Scoring Sheets
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'docs/hackathon/coach-guide/SCORING-SHEET*.md'
+      - 'scripts/Export-ScoringSheet.ps1'
+      - 'scripts/Aggregate-ScoringSheets.ps1'
+
+jobs:
+  aggregate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PowerShell
+        uses: PowerShell/PowerShell@v1
+        with:
+          version: '7.4.1'
+
+      - name: Aggregate scoring sheets
+        run: |
+          pwsh ./scripts/Aggregate-ScoringSheets.ps1 -RootPath ./docs/hackathon/coach-guide -OutputDirectory scoring-aggregate
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: scoring-aggregate
+          path: scoring-aggregate
+
+      - name: Summary
+        run: |
+          echo '## Scoring Aggregation Complete' >> $GITHUB_STEP_SUMMARY
+          echo '' >> $GITHUB_STEP_SUMMARY
+          echo 'Exported artifacts:' >> $GITHUB_STEP_SUMMARY
+          ls -1 scoring-aggregate >> $GITHUB_STEP_SUMMARY

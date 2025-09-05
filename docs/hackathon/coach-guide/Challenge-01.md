@@ -2,58 +2,59 @@
 
 ## Purpose
 
-This guide supports coaches in facilitating Challenge 01, helping students understand the business case and document key requirements for identity, network, database, and application security.
+Enable consistent coaching for Challenge 01 by reinforcing disciplined requirement capture (Current Gap → Future Need → Business Priority) without premature solutioning. Coaches should steer teams toward clarity, traceability, and justified scope—not architecture decisions.
 
 ---
 
 ## Learning Outcomes
 
-- Students analyze a real-world business scenario and extract security requirements.
-- Students distinguish between current gaps and future needs.
-- Students prioritize compliance and user experience in their documentation.
-- Students practice structured documentation using tables and references.
+- Students interpret the business scenario and translate it into initial security requirements.
+- Students clearly differentiate Current Gap vs Future Need for each requirement.
+- Students articulate Business Priority (compliance or user experience) explicitly.
+- Students produce a structured table with authoritative references.
 
 ---
 
 ## Facilitation Tips
 
-- Encourage students to read the [IFS Customer Story](https://jonathan-vella.github.io/xlr8-e2eaisolutions/customer-story/) thoroughly before starting.
-- Guide students to use the requirements table format and to be specific in their entries.
-- Remind students to address both current gaps and future needs for each area.
-- Prompt students to justify requirements with references to the business case or best practices.
-- Emphasize the importance of compliance and user experience as business priorities.
-- Suggest students use external resources for inspiration (e.g., Microsoft Cloud Adoption Framework).
+- Insist they extract business goals first; if goals aren’t written down, pause work.
+- Watch for solution bias (e.g., “Use Conditional Access”)—redirect to outcome phrasing (“Enforce adaptive access policy for privileged actions”).
+- Check column completeness early (some teams skip Future Need or Business Priority—intervene quickly).
+- Encourage referencing authoritative sources (CAF, Zero Trust, product docs) not generic blogs.
+- Reinforce measurable language (avoid “improve”, prefer “MUST”, “SHALL”, or outcome with cadence/threshold).
+- Limit time spent polishing wording—breadth + clarity over perfection.
 
 ---
 
 ## Common Pitfalls
 
-- Overlooking one or more security areas (identity, network, database, application).
-- Focusing only on current gaps or only on future needs, instead of both.
-- Failing to connect requirements to business priorities (compliance, user experience).
-- Providing vague or generic requirements without justification.
-- Not using the table format for clarity.
+- Missing one or more domains entirely.
+- Writing future state as a product name (solution lock-in).
+- Vague verbs (“improve”, “strengthen”, “harden”) without measurable target.
+- No reference cited (reduces credibility & reusability downstream).
+- Business Priority column filled with “Security” (push them to choose compliance vs user experience driver).
 
 ---
 
 ## Coaching Prompts
 
-- "How does this requirement support the business goals described in the customer story?"
-- "What compliance or user experience considerations are relevant here?"
-- "Can you identify both a current gap and a future need for this area?"
-- "What reference or best practice supports your requirement?"
-- "Is your documentation clear and easy to follow for others?"
+- “Which business goal does this requirement trace to?”
+- “What’s the explicit Current Gap evidence?”
+- “Is the Future Need written in an outcome (not tool) form?”
+- “Why is this Compliance vs User Experience—justify the choice.”
+- “What authoritative reference can you attach?”
+- “Could someone implement later without asking you clarifying questions?”
 
 ---
 
 ## Assessment Guidance
 
-Use the scoring rubric provided in the student guide. Look for:
-- Coverage of all areas
-- Specific, justified requirements
-- Clear mapping to business priorities
-- Use of references
-- Table format and clarity
+Rubric anchors (Excellent band) should require:
+- All four domains present (identity, network, database, application)
+- Each row has: Requirement (outcome), Current Gap, Future Need, Business Priority, Reference
+- No vague verbs without quantifier or cadence
+- Each requirement defensible via cited source or business goal
+- Table formatting consistent (readability = minimal friction)
 
 ---
 
@@ -66,4 +67,4 @@ Use the scoring rubric provided in the student guide. Look for:
 ---
 
 **Coach Tip:**
-Encourage students to ask "why" for each requirement. This builds critical thinking and sets the stage for effective security design in later challenges.
+If a team stalls: have them draft one exemplar row (identity) to “set the pattern” then parallelize remaining rows across members. Quality accelerates once pattern clarity is achieved.

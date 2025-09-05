@@ -33,8 +33,9 @@ You are tasked with implementing the network blueprint for SAIF. The goal is to 
 3. **Implement Security Controls and Connectivity**
    - Establish secure connectivity between your hub and spoke networks using Azure-native features.
    - Select and configure appropriate security controls (e.g., firewalls, gateways, WAF, NSGs) for each subnet and document your rationale.
+   - Link each control to the specific Current Gap it addresses and the Future Need (desired outcome).
    - Ensure your configuration supports segmentation, monitoring, and compliance requirements.
-   - Document your network topology, security rules, and peering setup, explaining how each supports zero trust.
+   - Document your network topology, security rules, and peering setup, explaining how each supports zero trust principles and business priorities.
 
 4. **Document Your Deployment**
    - Submit screenshots or exported configuration files showing:
@@ -54,6 +55,20 @@ You are tasked with implementing the network blueprint for SAIF. The goal is to 
 - Deployment is documented with screenshots/config files and a summary.
 
 ## Scoring Rubric
+
+## Quality Checklist
+- Hub & spoke components deployed per design intent.
+- Each security control traced back to a documented Gap.
+- Peering + routing behavior validated (not assumed).
+- NSG/Firewall rules documented with purpose (least privilege rationale).
+- Evidence (screenshots/config extracts) corresponds to described outcomes.
+
+See consolidated checklist: [QUALITY-CHECKLIST](../QUALITY-CHECKLIST.md#challenge-04--network-deployment)
+
+### Submission Artifacts
+- Screenshots / config extracts (peering, NSGs, firewall)
+- Deviation notes (if any)
+- Summary paragraph tying deployment to design
 
 | Criteria                        | Excellent (5) | Good (3) | Needs Improvement (1) |
 |---------------------------------|---------------|----------|-----------------------|
@@ -75,4 +90,4 @@ You are tasked with implementing the network blueprint for SAIF. The goal is to 
 ---
 
 **Tip:**
-Focus on clear segmentation, security controls, and documentation to demonstrate zero trust implementation.
+When documenting, use a consistent pattern: Gap → Control → Outcome. This improves clarity and speeds review.

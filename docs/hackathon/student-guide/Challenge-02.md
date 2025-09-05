@@ -25,12 +25,22 @@ You are tasked with strengthening identity security for SAIF. This is a design c
      - What options exist for integrating cloud database authentication with enterprise identity?
 
 3. **Document Your Remediation Plan**
-   - Use a table to outline each area you identify:
-     - Description
-     - Current Gap
-     - Proposed Solution
-     - Business Priority (Compliance/User Experience)
-     - Reference
+    - Use a table to outline each area you identify with consistent terminology:
+       - Description (concise requirement / control outcome)
+       - Current Gap (what’s missing now)
+       - Future Need (target state / control objective)
+       - Business Priority (Compliance/User Experience)
+       - Reference (authoritative source)
+
+### Suggested Table Structure
+
+| Area | Description | Current Gap | Future Need | Business Priority (Compliance/User Experience) | Reference |
+|------|-------------|-------------|-------------|-----------------------------------------------|-----------|
+|      |             |             |             |                                               |           |
+
+<!-- Example row (remove before submitting):
+| Privileged Access | Enforce MFA + time-bound elevation for all privileged roles | Some admin accounts lack MFA; permanent role assignments | All privileged actions require MFA; roles limited to just-in-time 1h elevation | Compliance | IFS Story; Entra Conditional Access Overview |
+-->
 
 ## Success Criteria
 
@@ -40,6 +50,20 @@ You are tasked with strengthening identity security for SAIF. This is a design c
 - References to best practices or documentation included.
 
 ## Scoring Rubric
+
+## Quality Checklist
+- Each row includes: Description, Current Gap, Future Need, Business Priority, Reference.
+- Requirements are outcome-based (no premature product/config syntax).
+- Business Priority states Compliance or User Experience explicitly.
+- References are authoritative (docs, frameworks) not generic blogs.
+- No vague verbs ("improve", "enhance") without measurable outcome.
+
+See consolidated checklist: [QUALITY-CHECKLIST](../QUALITY-CHECKLIST.md#challenge-02--identity-remediation-plan)
+
+### Submission Artifacts
+- Identity remediation table
+- Prioritized list (top 3–5 items with rationale)
+- References list
 
 | Criteria                        | Excellent (5) | Good (3) | Needs Improvement (1) |
 |---------------------------------|---------------|----------|-----------------------|

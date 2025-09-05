@@ -26,11 +26,12 @@ You have developed a plan to eliminate public access to your web, API, and SQL e
    - Create and configure Azure Private Endpoints for each service.
    - Set up Private DNS Zones to resolve internal service names.
    - Update NSGs and other security controls to restrict public access.
+   - For each change, note the original Gap and the achieved Future Need.
 
 2. **Validate Implementation**
    - Test connectivity to all services from within the private network.
    - Confirm that public access is blocked and only private connections are allowed.
-   - Document your validation steps and results (screenshots, logs, configuration files).
+   - Document validation: Test Performed → Expected Outcome → Actual Result → Evidence.
 
 3. **Document Your Work**
    - Submit a summary of your implementation, including configuration details, validation evidence, and any challenges encountered.
@@ -44,6 +45,20 @@ You have developed a plan to eliminate public access to your web, API, and SQL e
 - Documentation includes summary, configuration details, and references.
 
 ## Scoring Rubric
+
+## Quality Checklist
+- All prior public endpoints verified as inaccessible publicly.
+- Private DNS resolution demonstrated (name → private IP lookup evidence).
+- Each change mapped: Gap → Action → Future Need.
+- Validation steps reproducible and clearly logged.
+- Documentation distinguishes configuration vs validation evidence.
+
+See consolidated checklist: [QUALITY-CHECKLIST](../QUALITY-CHECKLIST.md#challenge-07--private-connectivity-implementation)
+
+### Submission Artifacts
+- Evidence of blocked public access
+- Private DNS resolution proof
+- Validation test matrix
 
 | Criteria                        | Excellent (5) | Good (3) | Needs Improvement (1) |
 |---------------------------------|---------------|----------|-----------------------|

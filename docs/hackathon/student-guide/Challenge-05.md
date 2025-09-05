@@ -25,7 +25,7 @@ Your SAIF environment is exposed to the internet and at risk of web-based attack
 1. **Deploy and Configure WAF**
    - Choose an appropriate Azure WAF deployment model (e.g., Application Gateway WAF, Azure Front Door WAF).
    - Configure WAF policies to protect your web and API endpoints.
-   - Document your WAF configuration and rules.
+   - Document your WAF configuration and rules, linking each rule/policy to the Current Gap it mitigates and the Future Need (target protective outcome).
 
 2. **Demonstrate Attack Blocking**
    - Simulate common web attacks (e.g., SQL injection, XSS, path traversal) against your endpoints.
@@ -48,6 +48,20 @@ Your SAIF environment is exposed to the internet and at risk of web-based attack
 
 ## Scoring Rubric
 
+## Quality Checklist
+- WAF model selection justified (why this deployment model).
+- Each rule/policy linked to a Gap or attack class.
+- Attack evidence shows blocked attempt + relevant log entry.
+- No unnecessary broad allow rules introduced.
+- Bonus (JS challenge) documented if implemented.
+
+See consolidated checklist: [QUALITY-CHECKLIST](../QUALITY-CHECKLIST.md#challenge-05--waf-implementation)
+
+### Submission Artifacts
+- WAF configuration summary
+- Attack test evidence (blocked examples)
+- (Optional) JS challenge evidence
+
 | Criteria                        | Excellent (5) | Good (3) | Needs Improvement (1) |
 |---------------------------------|---------------|----------|-----------------------|
 | WAF Deployment & Configuration  | Fully deployed and documented | Partially deployed/configured | Not deployed or misconfigured |
@@ -63,4 +77,4 @@ Your SAIF environment is exposed to the internet and at risk of web-based attack
 ---
 
 **Tip:**
-Focus on demonstrating real attack blocking and explaining how your WAF configuration protects SAIF.
+Pair each blocked attack with: Attack Vector → Gap Exploited (before) → WAF Rule/Policy → Observed Outcome.

@@ -36,6 +36,7 @@ You are responsible for architecting the network for SAIF. Your goal is to desig
 
 4. **Document Your Design**
    - Submit a photo or screenshot of your diagram, plus a table or list of justifications for each control.
+   - For each control: Purpose, Current Gap it addresses, Future Need (desired outcome), Business Priority (if applicable), Reference.
    - Reference best practices and documentation.
 
 ## Success Criteria
@@ -47,6 +48,20 @@ You are responsible for architecting the network for SAIF. Your goal is to desig
 - References to best practices or documentation included.
 
 ## Scoring Rubric
+
+## Quality Checklist
+- Diagram includes segmentation, perimeter, identity-aware access, monitoring components.
+- Each control in justification list maps to a specific Gap.
+- Future Need phrased as an outcome (e.g., "east-west traffic inspection").
+- References support zero trust alignment.
+- Business priority rationale present where user experience or compliance trade-offs exist.
+
+See consolidated checklist: [QUALITY-CHECKLIST](../QUALITY-CHECKLIST.md#challenge-03--zero-trust-network-design)
+
+### Submission Artifacts
+- Network diagram image
+- Control justification table/list
+- References section
 
 | Criteria                        | Excellent (5) | Good (3) | Needs Improvement (1) |
 |---------------------------------|---------------|----------|-----------------------|
@@ -66,4 +81,4 @@ You are responsible for architecting the network for SAIF. Your goal is to desig
 ---
 
 **Tip:**
-Your design will be implemented in Challenge 04. Focus on “why” each network control is needed and how it supports business priorities.
+Anchor each control to a clearly stated gap. “Added Azure Firewall” is weaker than “Outbound traffic currently unrestricted (Gap) → Central policy inspection via Azure Firewall (Future Need).”

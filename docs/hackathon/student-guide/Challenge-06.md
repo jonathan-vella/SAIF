@@ -23,12 +23,24 @@ Your SAIF environment currently exposes public endpoints for the web front end, 
 
 1. **Assess Current Exposure**
    - Identify all public endpoints in your SAIF deployment (Web, API, SQL).
-   - Document risks and business impacts of public exposure.
+   - Document risks (Current Gaps) and business impacts of public exposure.
 
 2. **Develop a Remediation Plan**
-   - Outline steps to remove public access for each endpoint.
+   - Outline steps to remove public access for each endpoint (Gap → Future Need mapping).
    - Specify which Azure services and features (e.g., Private Endpoints, Private Link, NSGs) will be used.
    - Address migration, downtime, and user access considerations.
+
+### Suggested Table Structure
+
+| Endpoint | Current Gap | Future Need | Business Priority (Compliance/User Experience) | Reference |
+|----------|-------------|-------------|-----------------------------------------------|-----------|
+| Web Front End | Public HTTPS exposure; no network boundary | Accessible only via private endpoint + internal DNS; no direct public access | Compliance | Azure Private Endpoint Docs |
+| API |  |  |  |  |
+| SQL Database |  |  |  |  |
+
+<!-- Example row (remove before submitting):
+| Web Front End | Public endpoint accessible from any IP | Private Endpoint + DNS zone resolution only from hub VNet | Compliance | Azure Private Endpoint; Private DNS Zones |
+-->
 
 3. **Design Private DNS Zone Implementation**
    - Plan the creation and configuration of Azure Private DNS Zones for your environment.
@@ -48,6 +60,20 @@ Your SAIF environment currently exposes public endpoints for the web front end, 
 - Documentation includes diagrams/tables and references.
 
 ## Scoring Rubric
+
+## Quality Checklist
+- All public endpoints enumerated with explicit Current Gap wording.
+- Future Need phrased as a target state (not tool-only statement).
+- Remediation steps sequenced logically (prerequisites clear).
+- DNS strategy covers name resolution + lifecycle (creation, linking, updates).
+- Business Priority specified for each major remediation step.
+
+See consolidated checklist: [QUALITY-CHECKLIST](../QUALITY-CHECKLIST.md#challenge-06--private-endpoint--dns-planning)
+
+### Submission Artifacts
+- Endpoint exposure table
+- Remediation plan steps (ordered)
+- DNS design notes / mapping
 
 | Criteria                        | Excellent (5) | Good (3) | Needs Improvement (1) |
 |---------------------------------|---------------|----------|-----------------------|

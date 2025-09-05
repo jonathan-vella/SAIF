@@ -128,6 +128,22 @@ This application contains multiple security vulnerabilities for students to iden
 - API security concerns
 - Content safety risks
 
+## Quality & Evaluation Resources
+
+| Resource | Purpose | Link |
+|----------|---------|------|
+| Student Consolidated Quality Checklist | Single source of truth for per‑challenge quality expectations & pre‑flight review | [QUALITY-CHECKLIST](docs/hackathon/QUALITY-CHECKLIST.md) |
+| Coach Red Flags Guide | Rapid assessment of common weak submission patterns | [Coach Red Flags](docs/hackathon/coach-guide/QUALITY-RED-FLAGS.md) |
+| Scoring Sheet Template | Lightweight, repeatable rubric capture & notes | [Scoring Sheet](docs/hackathon/coach-guide/SCORING-SHEET.md) |
+| Scoring CSV Export Script | Parse markdown scoring sheet to CSV for aggregation | `scripts/Export-ScoringSheet.ps1` |
+| Multi-Sheet Aggregator | Combine multiple team scoring sheets & totals | `scripts/Aggregate-ScoringSheets.ps1` |
+| GitHub Action (Aggregation) | Automated artifact build of combined scores | `.github/workflows/scoring-aggregation.yml` |
+| JSON Export Support | Structured data for automation / dashboards | Use `-JsonPath` or `-IncludeJson` on scripts |
+| Summary Dashboard | Markdown & HTML ranking with stats (percentile=better) | `Aggregate-ScoringSheets.ps1 -GenerateSummary` |
+| Docs Linter Script | Optional pre‑commit validation of challenge docs | `scripts/Invoke-DocsLint.ps1` |
+
+Additions for new challenges should include: a "Quality Checklist" link, a "Submission Artifacts" section, and authoritative references. The linter can help enforce this.
+
 ## Workshop Structure
 
 1. **Deployment**: Deploy the insecure application
@@ -250,3 +266,13 @@ graph TD
 ## License
 
 MIT
+
+## (Optional) Enable Documentation Pre-Commit Hook
+To automatically run the docs linter before each commit:
+```powershell
+git config core.hooksPath .githooks
+```
+Disable again by resetting:
+```powershell
+git config --unset core.hooksPath
+```

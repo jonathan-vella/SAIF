@@ -9,6 +9,9 @@ guide_type: student
 ## Overview
 This guide is designed for hackathon students participating in the Secure AI Foundations (SAIF) challenge. It provides a structured overview of all technical challenges, prerequisites, and expected outcomes. Each challenge builds on the previous, guiding you through the design, deployment, and security hardening of a modern cloud application.
 
+### Important: Intentional Vulnerabilities
+The SAIF environment you will interact with is **intentionally vulnerable**. Misconfigurations and weak controls are present by design to support learning (e.g., permissive network exposure, lack of private endpoints, broad diagnostics, public database access patterns). Your early challenges focus on *identifying and documenting* these gaps—not fixing them prematurely. Fixes without prior documented requirements or gap articulation may reduce later challenge value.
+
 ## Prerequisites
 - Azure account with sufficient permissions (Subscription Owner recommended)
 - Access to the SAIF repository and all challenge guides

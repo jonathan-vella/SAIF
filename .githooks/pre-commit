@@ -1,0 +1,15 @@
+#!/usr/bin/env pwsh
+# Pre-commit hook: run documentation linter (optional)
+$repoRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+$scripts = Join-Path $repoRoot 'scripts'
+$linter = Join-Path $scripts 'Invoke-DocsLint.ps1'
+if(Test-Path $linter){
+  Write-Host '[pre-commit] Running documentation linter...'
+  pwsh -File $linter
+  if($LASTEXITCODE -ne 0){
+    Write-Host '[pre-commit] Lint failed. Commit aborted.' -ForegroundColor Red
+    exit 1
+  }
+}else{
+  Write-Host '[pre-commit] Linter not found, skipping.'
+}
